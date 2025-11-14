@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sentiment analysis Lambda using Comprehend and SNS
+
+Globals:
+  Function:
+    Runtime: python3.11
+    Timeout: 10
+    MemorySize: 128
+
+Resources:
+
+  SentimentAlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: SentimentAlertTopic
+
+  SentimentAnalysisFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SentimentAnalysisFunction
+      Handler: lambda_function.lambda_handler
+      CodeUri: .
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref SentimentAlertTopic
+          LANGUAGE_CODE: "en"
+          NEGATIVE_THRESHOLD: "0.6"
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - comprehend:DetectSentiment
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: !Ref SentimentAlertTopic
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "arn:aws:logs:*:*:*"

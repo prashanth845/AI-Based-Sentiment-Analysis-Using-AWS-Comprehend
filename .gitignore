@@ -1,0 +1,12 @@
+
+__pycache__/
+.aws-sam/
+.env
+.envrc
+*.pyc
+*.pyo
+*.zip
+node_modules/
+.DS_Store
+.vscode/
+.idea/

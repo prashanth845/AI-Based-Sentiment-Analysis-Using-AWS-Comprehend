@@ -1,0 +1,6 @@
+{
+  "SNS_TOPIC_ARN": "arn:aws:sns:us-east-1:123456789012:SentimentAlertTopic",
+  "LANGUAGE_CODE": "en",
+  "NEGATIVE_THRESHOLD": 0.6,
+  "DDB_TABLE": ""
+}
